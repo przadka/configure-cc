@@ -1,0 +1,1 @@
+/home/michal/.claude/projects/-home-michal-agents-configure-cc/memory/session-extraction.md
