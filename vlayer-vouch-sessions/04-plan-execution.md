@@ -1,9 +1,9 @@
-# Session 4: Plan Execution (Cert Cleanup)
+# Session 3: Plan Execution
 
 **Date**: 2026-03-10
 **Project**: vlayer/vouch
 **Branch**: przadka/replace-tlsn-wasm-with-web-prover-server
-**Focus**: Executing the cert-cleanup plan, branching, committing results
+**Focus**: Separate session spun up to execute the plan (protecting Session 2's context). Runs the 5-phase plan directly, then saves state for the next session.
 **Session ID**: `484ae0ba`
 
 ---
