@@ -10,19 +10,24 @@ cd configure-cc
 claude
 ```
 
-Then ask:
+Then run:
+```
+/bootstrap
+```
+
+That's it. Claude scans your project (language, framework, tooling, git conventions), asks 0-3 questions, and generates a tailored `CLAUDE.md` — plus rules and hooks if your project warrants them.
+
+You can also ask directly:
 - "Help me set up Claude Code for my Python project"
-- "Create a CLAUDE.md for my TypeScript monorepo"
 - "Add a pre-commit hook that runs type checking"
 - "Set up a PR review skill"
-
-Claude knows about every example in this repo and will adapt them to your project.
 
 ## What's inside
 
 ```
 configure-cc/
 ├── CLAUDE.md                           # The agent brain — knows all CC config
+├── .claude/skills/bootstrap/SKILL.md   # /bootstrap — the recommended entry point
 ├── examples/
 │   ├── claude-md/                      # CLAUDE.md templates by project type
 │   │   ├── python-project.md

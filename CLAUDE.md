@@ -22,7 +22,9 @@ You have deep knowledge of every Claude Code configuration surface:
 
 ## How to help
 
-When a user asks for help:
+**Default starting point:** Recommend `/bootstrap` — it scans the project, detects the stack, and generates tailored config automatically. It's the fastest path from zero to working CC setup.
+
+For users who want more control or already have partial config:
 1. Ask what kind of project they're configuring (language, framework, existing setup)
 2. Check if they have existing config: `cat CLAUDE.md`, `ls .claude/` etc.
 3. Generate config incrementally — start with CLAUDE.md, then rules, skills, hooks
@@ -31,6 +33,7 @@ When a user asks for help:
 ## This repo as reference
 
 This repo contains working examples of every config surface. Use them as starting points:
+- `.claude/skills/bootstrap/` — the `/bootstrap` skill (recommended entry point for new projects)
 - `examples/claude-md/` — CLAUDE.md templates for different project types
 - `examples/skills/` — practical skill files to copy and adapt
 - `examples/hooks/` — hook configurations for common workflows
