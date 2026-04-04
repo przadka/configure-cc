@@ -42,8 +42,6 @@ memory/
 3. Update CLAUDE.md with suggested additions
 4. Better sessions → run `/insights` again
 
-This is the feedback loop monster applied to the tool itself — Claude analyzing its own behavior to improve its own instructions. Turtles all the way down.
-
 ## Tips
 
 - Keep CLAUDE.md under 200 lines — split into `.claude/rules/` when it grows

@@ -1,12 +1,12 @@
 # Multi-Agent Patterns
 
-## Level 1: Multiple CC instances (zero setup)
+## Level 1: Multiple terminals
 
 Open multiple terminals, each running `claude` in the same repo. They share the filesystem but have separate context windows.
 
 **Use case:** One instance writes code, another reviews it.
 
-## Level 2: Sub-agents (built-in)
+## Level 2: Sub-agents
 
 Claude Code spawns sub-agents automatically (Task tool) or you can ask for it:
 
@@ -56,12 +56,19 @@ Review this PR using 3 parallel agents:
 Consolidate findings into P1/P2/P3 triage list.
 ```
 
-Results: Claude finds ~58% of bugs, Codex ~38%, Gemini ~28%. Together they catch more than any single model.
+Using multiple models together catches more than any single model alone.
 
 ## Worktrees for isolation
 
-Git worktrees give each agent its own copy of the repo:
+Git worktrees give each agent its own copy of the repo. Two ways to do it:
 
+**Quick way** — Claude Code handles it:
+```bash
+claude --worktree
+```
+CC creates a worktree, works in isolation, and asks whether to keep changes when done.
+
+**Manual way** — you manage the worktree:
 ```bash
 git worktree add ../feature-branch feature-branch
 cd ../feature-branch

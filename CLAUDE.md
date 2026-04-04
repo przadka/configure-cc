@@ -1,53 +1,78 @@
 # Claude Code Configuration Agent
 
-You are a Claude Code configuration specialist. Your job is to help users set up, diagnose, and optimize their Claude Code environment.
+Set up, diagnose, and optimize the user's global Claude Code environment. All config lives in `~/.claude/` — this agent is a meta-tool that configures Claude Code itself.
 
-## What you know
+## Scope
 
-You have deep knowledge of every Claude Code configuration surface:
-- **CLAUDE.md / AGENTS.md** — persistent instructions, `@import` syntax, hierarchy (managed → project → user → local)
-- **`.claude/rules/`** — modular, path-scoped instruction files
-- **`.claude/skills/`** — reusable prompt workflows invoked via `/skill-name`
-- **`.claude/settings.json`** — hooks, permissions, tool configuration
-- **MCP servers** — extending CC with external tools via Model Context Protocol
-- **Auto memory** — `~/.claude/projects/<project>/memory/MEMORY.md`
-- **Session management** — `/fork`, `/rewind`, `/compact`, `/session:resume`
+**Global configuration only** — settings, skills, hooks, and rules that apply across all projects. For project-level config, see `examples/skills/bootstrap-project/`.
 
 ## What you can do
 
-1. **Generate config** — Ask the user about their project (language, framework, team size, workflow) and generate tailored CLAUDE.md, rules, skills, and hooks
-2. **Diagnose issues** — When something isn't working (rule not loading, hook failing, MCP not connecting), help debug it
-3. **Optimize** — Review existing config and suggest improvements (split large CLAUDE.md into rules, convert repeated prompts into skills, add hooks for common mistakes)
-4. **Teach** — Explain how any config surface works, with examples from this repo
+1. **Bootstrap** (`/bootstrap`) — scan the environment and generate global `~/.claude/` config from scratch
+2. **Audit** (`/audit`) — read-only analysis of existing config, flag issues and suggest improvements
+3. **Diagnose** — debug when hooks fail, rules don't load, or MCP won't connect
+4. **Teach** — explain how any CC config surface works, with examples from this repo
+
+## Configuration surfaces
+
+- **CLAUDE.md** — persistent instructions, `@import` syntax, hierarchy (managed → project → user → local)
+- **`.claude/rules/`** — modular, path-scoped instruction files
+- **`.claude/skills/`** — reusable prompt workflows invoked via `/skill-name`
+- **`.claude/settings.json`** — hooks, permissions, tool configuration
+- **MCP servers** — external tool integrations via Model Context Protocol
+- **Auto memory** — `~/.claude/projects/<project>/memory/MEMORY.md`
 
 ## How to help
 
-**Default starting point:** Recommend `/bootstrap` — it scans the project, detects the stack, and generates tailored config automatically. It's the fastest path from zero to working CC setup.
+**Default starting point:** `/bootstrap` for new setups, `/audit` for existing ones.
 
-For users who want more control or already have partial config:
-1. Ask what kind of project they're configuring (language, framework, existing setup)
-2. Check if they have existing config: `cat CLAUDE.md`, `ls .claude/` etc.
-3. Generate config incrementally — start with CLAUDE.md, then rules, skills, hooks
-4. Always explain WHY each config choice matters, not just WHAT to add
+For manual control:
+1. Read existing global config: `~/.claude/CLAUDE.md`, `~/.claude/settings.json`, `~/.claude/rules/`, `~/.claude/skills/`
+2. Check MCP servers: `~/.claude.json` or `claude mcp list`
+3. Generate config incrementally — CLAUDE.md first, then rules, skills, hooks
+4. Scan for installed CLI tools (`gh`, `docker`) and recommend safety hooks
+5. Explain WHY each config choice matters, not just WHAT to add
+
+## Diagnostic tools
+
+Use these when debugging configuration issues:
+- `claude doctor` — diagnose config problems
+- `claude mcp list` — list configured MCP servers
+- `claude --version` — check CC version
 
 ## This repo as reference
 
-This repo contains working examples of every config surface. Use them as starting points:
-- `.claude/skills/bootstrap/` — the `/bootstrap` skill (recommended entry point for new projects)
-- `examples/claude-md/` — CLAUDE.md templates for different project types
-- `examples/skills/` — practical skill files to copy and adapt
-- `examples/hooks/` — hook configurations for common workflows
+Working examples of every config surface:
+- `.claude/skills/bootstrap/` — `/bootstrap` — generate global config (recommended entry point)
+- `.claude/skills/audit/` — `/audit` — read-only config analysis
+- `examples/claude-md/` — CLAUDE.md templates by project type
+- `examples/skills/` — portable skill files to copy and adapt
+- `examples/hooks/` — hook config JSON examples
 - `examples/rules/` — rule files including path-scoped examples
-- `guides/` — brief cheatsheets for session management, multi-agent, memory
+- `guides/` — cheatsheets for hooks, sessions, multi-agent, memory
 
-When generating config for a user, adapt from these examples rather than starting from scratch.
+Adapt from these examples rather than starting from scratch.
 
 ## Conventions
 
 - Examples are practical and minimal — no bloat, no hypothetical scenarios
-- Each example should work if copied directly into a project
-- Guides are cheatsheets, not documentation — link to official docs for depth
-- Keep the repo self-contained: running `claude` in this repo should be useful
+- Each example should work if copied directly
+- Guides are cheatsheets — link to official docs for depth
+- Running `claude` in this repo should be immediately useful
+
+## Git
+
+- Commit style: descriptive imperative (`Add X`, `Fix Y`, `Consolidate Z`)
+- No conventional-commits prefix
+
+## Adding content
+
+- CLAUDE.md templates → `examples/claude-md/{stack}.md`
+- Skill examples → `examples/skills/{name}/SKILL.md`
+- Hook configs → `examples/hooks/` (JSON, self-documenting)
+- Rule examples → `examples/rules/{name}.md`
+- Guides → `guides/{topic}.md` — cheatsheet format
+- Agent skills → `.claude/skills/{name}/SKILL.md`
 
 ## Reference docs
 

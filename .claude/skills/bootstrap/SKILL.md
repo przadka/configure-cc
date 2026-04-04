@@ -1,133 +1,144 @@
 ---
 name: bootstrap
-description: Scan the current project and generate tailored Claude Code configuration in seconds
+description: Set up global Claude Code configuration — personal CLAUDE.md, skills, hooks, and settings
 disable-model-invocation: true
 effort: high
-allowed-tools: Read Glob Grep Bash(ls *) Bash(find *) Bash(which *) Bash(git *) Bash(cat *) Write Edit
-argument-hint: "[target-dir (default: cwd)]"
+allowed-tools: Read Glob Grep Bash(ls *) Bash(find *) Bash(which *) Bash(cat *) Bash(uname *) Bash(echo *) Write Edit
 ---
 
-Bootstrap Claude Code configuration for the project at `$ARGUMENTS` (default: current working directory).
+Set up the user's global Claude Code environment. ultrathink about what matters.
 
-You are about to give this project a brain. ultrathink about what matters.
+All generated config goes to **global paths** (`~/.claude/`), not the current project.
 
 ---
 
-## Pre-loaded project snapshot
+## Pre-loaded environment snapshot
 
-The following was captured automatically — use it, don't re-scan what's already here.
+### Current global config
+!`ls -la ~/.claude/CLAUDE.md ~/.claude/settings.json 2>/dev/null || echo "(no global config)"`
 
-### File tree (top 2 levels)
-!`find . -maxdepth 2 -not -path './.git/*' -not -path './node_modules/*' -not -path './__pycache__/*' -not -path './.venv/*' | head -60`
+### Existing global CLAUDE.md
+!`cat ~/.claude/CLAUDE.md 2>/dev/null || echo "(none)"`
 
-### Config files detected
-!`find . -maxdepth 3 \( -name "package.json" -o -name "pyproject.toml" -o -name "Cargo.toml" -o -name "go.mod" -o -name "Gemfile" -o -name "composer.json" -o -name "tsconfig.json" -o -name "next.config.*" -o -name "vite.config.*" -o -name "vitest.config.*" -o -name "jest.config.*" -o -name ".eslintrc*" -o -name "biome.json" -o -name "rustfmt.toml" -o -name ".golangci.yml" -o -name ".mcp.json" \) -not -path './node_modules/*' -not -path './.git/*' 2>/dev/null | head -30`
+### Existing global settings
+!`cat ~/.claude/settings.json 2>/dev/null || echo "(none)"`
 
-### Lock files (→ package manager)
-!`ls -1 pnpm-lock.yaml yarn.lock package-lock.json uv.lock Cargo.lock go.sum Gemfile.lock composer.lock 2>/dev/null || echo "(none found)"`
+### Existing global skills
+!`ls ~/.claude/skills/ 2>/dev/null || echo "(no skills)"`
 
-### Git history (commit style)
-!`git log --oneline -15 2>/dev/null || echo "(not a git repo)"`
+### Existing global rules
+!`ls ~/.claude/rules/ 2>/dev/null || echo "(no rules)"`
 
-### Existing CC config
-!`ls -la CLAUDE.md .claude/ .mcp.json 2>/dev/null || echo "(no existing CC config)"`
+### Shell & platform
+!`echo "Shell: $SHELL"; echo "OS: $(uname -s)"; echo "Home: $HOME"`
 
-### CI
-!`ls -d .github/workflows/ .gitlab-ci.yml Jenkinsfile .circleci/ 2>/dev/null || echo "(no CI detected)"`
+### Key binaries available
+!`for cmd in git node pnpm npm yarn bun python python3 uv pip cargo go ruby gem docker gh; do which $cmd 2>/dev/null && echo "  ✓ $cmd"; done || echo "(none found)"`
+
+### Global MCP servers
+!`cat ~/.claude.json 2>/dev/null || echo "(no global MCP config)"`
 
 ---
 
 ## Phase 1 — Read the Room
 
-You already have the snapshot above. Now deepen it:
+You have the snapshot above. Now assess:
 
-1. **Read key config files** — `package.json` (scripts, deps), `pyproject.toml` (tools, deps), `Cargo.toml`, etc. These reveal the exact commands, frameworks, and tooling.
-2. **Spot the framework** — FastAPI/Flask/Django imports, Next.js/Vite/Remix config, Actix/Axum in Cargo.toml, Gin/Echo in go.mod.
-3. **Check what's installed** — run `which` for key binaries (the package manager, linter, type checker). Only include commands that actually work.
-4. **Read a few source files** — understand the actual code style, not what you'd guess. Look at imports, error handling, naming.
+1. **What languages/tools does this user work with?** — The installed binaries tell you. Node + pnpm = JS/TS developer. Python + uv = Python developer. Both = polyglot. Tailor recommendations accordingly.
+2. **What global config exists already?** — Read the existing `~/.claude/CLAUDE.md` and `~/.claude/settings.json` carefully. Work additively — improve what's there, don't start over.
+3. **What skills are already installed?** — Don't recommend skills that duplicate what exists.
+4. **What MCP servers are configured?** — Note what's connected.
 
-**Present a project profile** — specific, not generic:
+**Present a profile:**
 
 ```
-Project: fastapi-webhooks
-Stack:   Python 3.12 · FastAPI · uv · pytest · ruff + pyright
-Layout:  src/webhooks/ → tests/ · alembic migrations
-CI:      GitHub Actions (test + deploy)
-Git:     conventional commits (feat/fix/chore), 847 commits
-CC:      no existing config ← we're fixing that
+Environment: Linux · bash · Node 22 + pnpm · Python 3.12 + uv · git + gh
+Global CC:   CLAUDE.md (exists, imports AGENTS.md) · 3 skills · settings.json with hooks
+MCP:         Playwright, Chrome DevTools
 ```
-
-If existing CLAUDE.md found → say so and switch to **additive mode** (suggest additions as a diff, never overwrite).
 
 ## Phase 2 — Fill in the Gaps
 
-Ask ONLY what you couldn't detect. Pick at most 3 from this list, skip the rest:
+Ask at most 3 questions. Only ask what you can't infer:
 
-- Commit style (only if git log was ambiguous or repo is brand new)
-- Test command subtleties (e.g., "do you need docker-compose up first?")
-- Any team conventions that code analysis can't reveal
-- Whether they want hooks (auto-lint, type check before commit)
+- What kinds of projects do they mostly work on? (helps tailor style rules)
+- Commit style preference (if not obvious from existing config)
+- Any pet peeves or must-have rules?
 
-If the scan answered everything → skip this phase entirely and say so. Don't manufacture questions.
+If existing config is comprehensive → skip questions and move to recommendations.
 
-## Phase 3 — Build the Config
+## Phase 3 — Configure
 
-Generate files in this order. After each, print one line saying what it does. Don't pause between files.
+Generate or update files at global paths. After each, print one line saying what it does.
 
-### 1. `CLAUDE.md`
+### 1. `~/.claude/CLAUDE.md` — Personal instructions
 
-Four sections, every line actionable. Target: 20-30 lines.
+This is the user's global brain. It should contain:
 
 ```markdown
-# Project Instructions
+# Personal Instructions
 
-## Build & Test
-[exact commands — package manager, build, test single/all, lint, format, type check]
+## Preferences
+[coding style preferences, communication style, workflow habits]
 
-## Code Style
-[4-6 rules pulled from actual patterns in THIS codebase, not generic advice]
+## Tools & Environment
+[default package managers, preferred test runners, shell setup]
 
-## Project Structure
-[describe the actual layout — where source lives, where tests go, how modules are organized]
-
-## Git
-[commit convention detected or chosen, pre-commit expectations]
+## Conventions
+[commit style, PR workflow, naming conventions they follow across projects]
 ```
 
-**Verify every command** — run `which <binary>` or check the config exists before including it. If `pnpm` isn't installed, don't put `pnpm test` in CLAUDE.md.
+Target: 15-25 lines, all signal. This applies to EVERY project, so keep it general — no project-specific commands.
 
-### 2. `.claude/rules/code-style.md` (conditional)
+**If `~/.claude/CLAUDE.md` already exists** → read it, then present suggested additions/changes as a diff. Never overwrite.
 
-Only create if the codebase has strong patterns worth codifying (e.g., consistent error handling, import ordering, naming conventions). 5-7 rules max. Skip for small or new projects.
+### 2. `~/.claude/skills/` — Portable skills (conditional)
 
-### 3. `.claude/settings.json` (conditional)
+Recommend and generate skills that work across any project. Good candidates:
 
-Only create if hooks add clear value. Tailor to the detected toolchain:
+- **commit** — conventional commits with context-aware messages
+- **review-pr** — parallel review agents for correctness, security, style
+- **bootstrap-project** — a lighter skill that generates project-level CLAUDE.md (the project-scoped complement to this global bootstrap)
 
-- **TypeScript**: `tsc --noEmit` pre-commit hook
-- **Python**: `ruff check .` pre-commit hook
-- **Rust**: `cargo clippy -- -D warnings` pre-commit hook
-- **Go**: `go vet ./...` pre-commit hook
+Only generate skills that don't already exist at `~/.claude/skills/`.
 
-If `.claude/settings.json` already exists → merge, don't overwrite.
+### 3. `~/.claude/settings.json` — Global hooks & permissions (conditional)
 
-### 4. Recap
+Recommend hooks that make sense globally:
+
+- Block `git add .` / `git add -A` (prefer explicit staging)
+- Block `rm -rf` without confirmation
+- Pre-commit lint check (if a universal linter is installed)
+
+**If `~/.claude/settings.json` already exists** → read it, merge new hooks, don't overwrite existing ones.
+
+### 4. MCP servers (recommend only)
+
+Don't install MCP servers — just recommend ones relevant to the detected environment:
+
+- **Playwright** (`claude mcp add --scope user playwright -- npx @playwright/mcp@latest`) — if Node installed
+- **Chrome DevTools** (`claude mcp add --scope user chrome-devtools -- npx -y chrome-devtools-mcp@latest`) — for perf debugging
+
+Print the `claude mcp add` commands for the user to run. Skip any already configured.
+
+### 5. Recap
 
 ```
-Done. Your project now has a brain.
+Done. Your global Claude Code environment is set up.
 
-  ✓ CLAUDE.md          — build commands, style rules, project layout
-  ✓ .claude/rules/...  — [if created: what it enforces]
-  ✓ .claude/settings   — [if created: what hooks do]
+  ✓ ~/.claude/CLAUDE.md     — [what it covers]
+  ✓ ~/.claude/skills/...    — [skills created or already present]
+  ✓ ~/.claude/settings.json — [hooks added or already present]
+  ℹ MCP recommendations     — [if any, with commands to run]
 
-Next time you run `claude` here, it already knows your project.
-Customize: edit CLAUDE.md or add rules in .claude/rules/
+This config applies to every project. For project-specific setup,
+create a CLAUDE.md in the project root.
 ```
 
 ## Ground Rules
 
-- **Never overwrite** existing CLAUDE.md. If one exists, present additions as a diff.
+- **All output goes to `~/.claude/`** — never write to project-local paths.
+- **Never overwrite** existing files. Read first, present diffs for changes.
 - **Never generate filler**. If a section would be generic ("follow best practices"), omit it.
-- **Verify before including**. Every command in CLAUDE.md must work if run right now.
-- **Less is more**. A 20-line CLAUDE.md that's all signal beats a 60-line one with padding.
-- **No rules/hooks for simple projects**. Solo script? Just CLAUDE.md. Monorepo with CI? Full setup.
+- **Verify before including**. Only recommend tools/commands that are actually installed.
+- **Global means portable**. Nothing project-specific in global config — it must work everywhere.

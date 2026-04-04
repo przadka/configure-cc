@@ -1,6 +1,6 @@
 # Configure Claude Code
 
-A self-aware Claude Code configuration agent. Clone this repo, run `claude` inside it, and it helps you set up and optimize your Claude Code environment.
+A Claude Code configuration agent. Clone this repo, run `claude`, and it helps you set up and optimize your global CC environment.
 
 ## Quick start
 
@@ -15,46 +15,51 @@ Then run:
 /bootstrap
 ```
 
-That's it. Claude scans your project (language, framework, tooling, git conventions), asks 0-3 questions, and generates a tailored `CLAUDE.md` — plus rules and hooks if your project warrants them.
+Claude scans your environment (installed tools, existing config, shell setup), asks 0-3 questions, and generates your global `~/.claude/` config — personal CLAUDE.md, portable skills, hooks, and MCP recommendations.
+
+Already have config? Try `/audit` for a read-only analysis with improvement suggestions.
 
 You can also ask directly:
-- "Help me set up Claude Code for my Python project"
-- "Add a pre-commit hook that runs type checking"
-- "Set up a PR review skill"
+- "Help me set up my global Claude Code config"
+- "Add a safety hook that blocks rm -rf"
+- "What MCP servers should I install?"
 
 ## What's inside
 
 ```
 configure-cc/
-├── CLAUDE.md                           # The agent brain — knows all CC config
-├── .claude/skills/bootstrap/SKILL.md   # /bootstrap — the recommended entry point
+├── CLAUDE.md                             # Agent brain — CC config knowledge
+├── .claude/skills/
+│   ├── bootstrap/SKILL.md                # /bootstrap — generate global config
+│   └── audit/SKILL.md                    # /audit — read-only config analysis
 ├── examples/
-│   ├── claude-md/                      # CLAUDE.md templates by project type
+│   ├── claude-md/                        # CLAUDE.md templates by project type
 │   │   ├── python-project.md
 │   │   └── typescript-project.md
-│   ├── skills/                         # Skill files to copy and adapt
+│   ├── skills/                           # Skill files to copy and adapt
 │   │   ├── commit/SKILL.md
-│   │   └── review-pr/SKILL.md
-│   ├── hooks/                          # Hook configs with explanations
-│   │   ├── README.md
+│   │   ├── review-pr/SKILL.md
+│   │   └── bootstrap-project/SKILL.md    # Project-level config generator
+│   ├── hooks/                            # Hook config JSON examples
 │   │   └── settings-with-hooks.json
-│   └── rules/                          # Rule files (always-on + path-scoped)
+│   └── rules/                            # Rule files (always-on + path-scoped)
 │       ├── code-style.md
-│       └── api-endpoints.md            # Path-scoped example
-├── guides/                             # Cheatsheets for advanced features
-│   ├── session-management.md           # /fork, /rewind, /compact
-│   ├── multi-agent.md                  # Parallel CC, CC+Gemini, worktrees
-│   └── memory-and-insights.md          # Auto memory, /insights feedback loop
-└── README.md                           # You are here
+│       └── api-endpoints.md
+├── guides/                               # Cheatsheets for CC features
+│   ├── hooks.md                          # Hook types, matchers, patterns
+│   ├── session-management.md             # /fork, /rewind, /compact
+│   ├── multi-agent.md                    # Parallel CC, worktrees, multi-model
+│   └── memory-and-insights.md            # Auto memory, /insights
+└── README.md
 ```
 
 ## How to use
 
-**As a configuration agent:** Run `claude` in this repo and ask it to generate config for your project. It reads the examples and adapts them.
+**As a configuration agent:** Run `claude` in this repo and ask it to configure your global CC environment. It reads the examples and adapts them.
 
-**As a reference:** Browse the `examples/` and `guides/` directories on GitHub. Copy what you need into your project.
+**As a reference:** Browse `examples/` and `guides/` on GitHub. Copy what you need.
 
-**As a learning tool:** Each example is practical and minimal. No bloat, no hypothetical scenarios — just config you'd actually use.
+**As a learning tool:** Each example is practical and minimal — config you'd actually use.
 
 ## Configuration surfaces
 
