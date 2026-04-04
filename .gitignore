@@ -1,0 +1,4 @@
+# Override global gitignore — this repo tracks .claude/skills/
+!.claude/
+.claude/settings.local.json
+.claude/worktrees/
