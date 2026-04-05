@@ -19,6 +19,7 @@ Set up, diagnose, and optimize the user's global Claude Code environment. All co
 - **`.claude/rules/`** — modular, path-scoped instruction files
 - **`.claude/skills/`** — reusable prompt workflows invoked via `/skill-name`
 - **`.claude/settings.json`** — hooks, permissions, tool configuration
+- **Status line** — customizable bar showing context %, cost, git info via shell script
 - **MCP servers** — external tool integrations via Model Context Protocol
 - **Auto memory** — `~/.claude/projects/<project>/memory/MEMORY.md`
 
@@ -49,7 +50,7 @@ Working examples of every config surface:
 - `examples/skills/` — portable skill files to copy and adapt
 - `examples/hooks/` — hook config JSON examples
 - `examples/rules/` — rule files including path-scoped examples
-- `guides/` — cheatsheets for hooks, sessions, multi-agent, memory
+- `guides/` — cheatsheets for hooks, sessions, multi-agent, memory, statusline
 
 Adapt from these examples rather than starting from scratch.
 
@@ -82,6 +83,7 @@ Always check the latest docs when unsure — CC evolves fast:
 - [Skills](https://code.claude.com/docs/en/skills) — custom slash commands and skill authoring
 - [Hooks](https://code.claude.com/docs/en/hooks) — lifecycle hooks configuration and examples
 - [Settings](https://code.claude.com/docs/en/settings) — settings.json reference
+- [Status Line](https://code.claude.com/docs/en/statusline) — custom status bar configuration
 - [MCP](https://code.claude.com/docs/en/mcp) — Model Context Protocol server setup
 - [Sub-agents](https://code.claude.com/docs/en/sub-agents) — agent definitions and sub-agent configuration
 - [Headless / claude -p](https://code.claude.com/docs/en/headless) — non-interactive/CI usage

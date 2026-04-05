@@ -49,7 +49,8 @@ configure-cc/
 │   ├── hooks.md                          # Hook types, matchers, patterns
 │   ├── session-management.md             # /fork, /rewind, /compact
 │   ├── multi-agent.md                    # Parallel CC, worktrees, multi-model
-│   └── memory-and-insights.md            # Auto memory, /insights
+│   ├── memory-and-insights.md            # Auto memory, /insights
+│   └── statusline.md                     # Custom status bar setup
 └── README.md
 ```
 
@@ -98,6 +99,7 @@ Your real browser with login state. Requires [Claude in Chrome extension](https:
 - [Skills](https://code.claude.com/docs/en/skills)
 - [Hooks](https://code.claude.com/docs/en/hooks)
 - [Settings](https://code.claude.com/docs/en/settings)
+- [Status Line](https://code.claude.com/docs/en/statusline)
 - [MCP](https://code.claude.com/docs/en/mcp)
 - [Sub-agents](https://code.claude.com/docs/en/sub-agents)
 - [Headless / claude -p](https://code.claude.com/docs/en/headless)
