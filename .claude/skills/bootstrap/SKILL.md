@@ -3,7 +3,7 @@ name: bootstrap
 description: Set up global Claude Code configuration — personal CLAUDE.md, skills, hooks, and settings
 disable-model-invocation: true
 effort: high
-allowed-tools: Read Glob Grep Bash(ls *) Bash(find *) Bash(which *) Bash(cat *) Bash(uname *) Bash(echo *) Write Edit
+allowed-tools: Read Glob Grep Bash(ls *) Bash(find *) Bash(which *) Bash(cat *) Bash(uname *) Bash(echo *) Bash(mkdir *) Write Edit
 ---
 
 Set up the user's global Claude Code environment. ultrathink about what matters.
@@ -14,38 +14,31 @@ All generated config goes to **global paths** (`~/.claude/`), not the current pr
 
 ## Pre-loaded environment snapshot
 
-### Current global config
-!`ls -la ~/.claude/CLAUDE.md ~/.claude/settings.json 2>/dev/null || echo "(no global config)"`
+These run inside the project sandbox — safe on any fresh install.
 
-### Existing global CLAUDE.md
-!`cat ~/.claude/CLAUDE.md 2>/dev/null || echo "(none)"`
-
-### Existing global settings
-!`cat ~/.claude/settings.json 2>/dev/null || echo "(none)"`
-
-### Existing global skills
-!`ls ~/.claude/skills/ 2>/dev/null || echo "(no skills)"`
-
-### Existing global rules
-!`ls ~/.claude/rules/ 2>/dev/null || echo "(no rules)"`
-
-### Shell & platform
-!`echo "Shell: $SHELL"; echo "OS: $(uname -s)"; echo "Home: $HOME"`
+### OS & home
+!`uname -s`
+!`echo ~`
 
 ### Key binaries available
-!`for cmd in git node pnpm npm yarn bun python python3 uv pip cargo go ruby gem docker gh; do which $cmd 2>/dev/null && echo "  ✓ $cmd"; done || echo "(none found)"`
-
-### Global MCP servers
-!`cat ~/.claude.json 2>/dev/null || echo "(no global MCP config)"`
+!`which git node pnpm npm yarn bun python python3 uv pip cargo go ruby gem docker gh 2>/dev/null || true`
 
 ---
 
 ## Phase 1 — Read the Room
 
-You have the snapshot above. Now assess:
+First, use your tools to read the user's existing global config. Read each of these (they may not exist yet — that's fine):
+
+1. `~/.claude/CLAUDE.md` — existing personal instructions
+2. `~/.claude/settings.json` — existing hooks and permissions
+3. `~/.claude/skills/` — list existing skill directories
+4. `~/.claude/rules/` — list existing rule files
+5. `~/.claude.json` — existing MCP server config
+
+Then assess:
 
 1. **What languages/tools does this user work with?** — The installed binaries tell you. Node + pnpm = JS/TS developer. Python + uv = Python developer. Both = polyglot. Tailor recommendations accordingly.
-2. **What global config exists already?** — Read the existing `~/.claude/CLAUDE.md` and `~/.claude/settings.json` carefully. Work additively — improve what's there, don't start over.
+2. **What global config exists already?** — Work additively — improve what's there, don't start over.
 3. **What skills are already installed?** — Don't recommend skills that duplicate what exists.
 4. **What MCP servers are configured?** — Note what's connected.
 

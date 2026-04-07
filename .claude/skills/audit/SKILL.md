@@ -12,37 +12,32 @@ Audit the user's global Claude Code configuration. ultrathink about what you fin
 
 ---
 
-## Snapshot
+## Pre-loaded snapshot
 
-### Global CLAUDE.md
-!`cat ~/.claude/CLAUDE.md 2>/dev/null || echo "(none)"`
-
-### Global CLAUDE.md line count
-!`wc -l < ~/.claude/CLAUDE.md 2>/dev/null || echo "0"`
-
-### Global settings
-!`cat ~/.claude/settings.json 2>/dev/null || echo "(none)"`
-
-### Global rules
-!`ls -la ~/.claude/rules/ 2>/dev/null || echo "(no rules directory)"`
-
-### Global skills
-!`find ~/.claude/skills/ -name "SKILL.md" 2>/dev/null || echo "(no skills)"`
-
-### MCP servers
-!`cat ~/.claude.json 2>/dev/null || echo "(no global MCP config)"`
+These run inside the project sandbox — safe on any install.
 
 ### Installed CLI tools
-!`for cmd in git gh node pnpm npm yarn bun python python3 uv pip cargo go ruby docker kubectl; do command -v $cmd >/dev/null 2>&1 && echo "  ✓ $cmd ($(which $cmd))"; done`
+!`which git gh node pnpm npm yarn bun python python3 uv pip cargo go ruby docker kubectl 2>/dev/null || true`
 
-### Shell & platform
-!`echo "Shell: $SHELL"; echo "OS: $(uname -s)"; echo "Home: $HOME"`
+### OS & home
+!`uname -s`
+!`echo ~`
 
 ### Claude Code version
 !`claude --version 2>/dev/null || echo "(claude CLI not in PATH)"`
 
-### Memory directories
-!`find ~/.claude/projects/ -name "MEMORY.md" 2>/dev/null | head -10 || echo "(no memory files)"`
+---
+
+## Phase 1 — Read global config
+
+Use your tools to read these paths (they may not all exist — that's expected):
+
+1. `~/.claude/CLAUDE.md` — personal instructions (also count lines with `wc -l`)
+2. `~/.claude/settings.json` — hooks and permissions
+3. `~/.claude/rules/` — list rule files
+4. `~/.claude/skills/` — find all SKILL.md files
+5. `~/.claude.json` — MCP server config
+6. `~/.claude/projects/` — find MEMORY.md files (up to 10)
 
 ---
 
