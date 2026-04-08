@@ -87,12 +87,6 @@ claude mcp add --scope user chrome-devtools -- npx -y chrome-devtools-mcp@latest
 ```
 Performance audits, network inspection, DOM access.
 
-### Chrome integration (beta)
-```bash
-claude --chrome
-```
-Your real browser with login state. Requires [Claude in Chrome extension](https://chromewebstore.google.com/detail/claude/fcoeoabgfenejglbffodgkkbkcdhcgfn).
-
 ## Reference docs
 
 - [Memory & CLAUDE.md](https://code.claude.com/docs/en/memory)
