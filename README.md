@@ -17,7 +17,7 @@ Then run:
 
 Claude scans your environment (installed tools, existing config, shell setup), asks 0-3 questions, and generates your global `~/.claude/` config — personal CLAUDE.md, portable skills, hooks, and MCP recommendations.
 
-Already have config? Try `/audit` for a read-only analysis with improvement suggestions.
+Already have config? Try `/audit` for a read-only analysis of your global CC config, or `/audit-agents-md` to check your project's CLAUDE.md / AGENTS.md for structure, bloat, and best practices.
 
 You can also ask directly:
 - "Help me set up my global Claude Code config"
@@ -31,7 +31,8 @@ configure-cc/
 ├── CLAUDE.md                             # Agent brain — CC config knowledge
 ├── .claude/skills/
 │   ├── bootstrap/SKILL.md                # /bootstrap — generate global config
-│   └── audit/SKILL.md                    # /audit — read-only config analysis
+│   ├── audit/SKILL.md                    # /audit — read-only global config analysis
+│   └── audit-agents-md/SKILL.md          # /audit-agents-md — project AGENTS.md quality audit
 ├── examples/
 │   ├── claude-md/                        # CLAUDE.md templates by project type
 │   │   ├── python-project.md

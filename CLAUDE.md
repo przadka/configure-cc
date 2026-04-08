@@ -9,9 +9,10 @@ Set up, diagnose, and optimize the user's global Claude Code environment. All co
 ## What you can do
 
 1. **Bootstrap** (`/bootstrap`) — scan the environment and generate global `~/.claude/` config from scratch
-2. **Audit** (`/audit`) — read-only analysis of existing config, flag issues and suggest improvements
-3. **Diagnose** — debug when hooks fail, rules don't load, or MCP won't connect
-4. **Teach** — explain how any CC config surface works, with examples from this repo
+2. **Audit** (`/audit`) — read-only analysis of existing global config, flag issues and suggest improvements
+3. **Audit AGENTS.md** (`/audit-agents-md`) — audit a project's CLAUDE.md / AGENTS.md for structure, bloat, stale references, and best practices
+4. **Diagnose** — debug when hooks fail, rules don't load, or MCP won't connect
+5. **Teach** — explain how any CC config surface works, with examples from this repo
 
 ## Configuration surfaces
 
@@ -45,7 +46,8 @@ Use these when debugging configuration issues:
 
 Working examples of every config surface:
 - `.claude/skills/bootstrap/` — `/bootstrap` — generate global config (recommended entry point)
-- `.claude/skills/audit/` — `/audit` — read-only config analysis
+- `.claude/skills/audit/` — `/audit` — read-only global config analysis
+- `.claude/skills/audit-agents-md/` — `/audit-agents-md` — project CLAUDE.md / AGENTS.md quality audit
 - `examples/claude-md/` — CLAUDE.md templates by project type
 - `examples/skills/` — portable skill files to copy and adapt
 - `examples/hooks/` — hook config JSON examples
