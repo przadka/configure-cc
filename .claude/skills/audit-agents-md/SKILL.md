@@ -3,7 +3,7 @@ name: audit-agents-md
 description: Audit a project's CLAUDE.md / AGENTS.md for structure, bloat, stale references, and best practices
 disable-model-invocation: true
 effort: high
-allowed-tools: Read Glob Grep Bash(ls *) Bash(wc *) Bash(test *) Bash(stat *)
+allowed-tools: Read Glob Grep Bash(ls *) Bash(find *) Bash(cat *) Bash(wc *) Bash(test *) Bash(stat *) Bash(head *)
 ---
 
 Audit the CLAUDE.md or AGENTS.md in the **current project directory**. ultrathink about what you find.
