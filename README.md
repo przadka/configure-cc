@@ -58,7 +58,7 @@ configure-cc/
 
 **As a configuration agent:** Run `claude` in this repo and ask it to configure your global CC environment. It reads the examples and adapts them.
 
-**As a reference:** Browse `examples/` and `guides/` on GitHub. Copy what you need.
+**As a reference:** Browse `examples/` and `guides/` for ready-made config you can copy into your own setup.
 
 **As a learning tool:** Each example is practical and minimal — config you'd actually use.
 
