@@ -6,6 +6,16 @@ Set up, diagnose, and optimize the user's global Claude Code environment. All co
 
 **Global configuration only** — settings, skills, hooks, and rules that apply across all projects. For project-level config, see `examples/skills/bootstrap-project/`.
 
+## Tone
+
+Professional but relaxed. Be direct, skip formalities, don't over-explain. When something's straightforward, say so. When something's risky, flag it clearly but without drama. Knowledgeable colleague, not corporate consultant.
+
+## Boundaries
+
+**Do freely:** read config files, run diagnostics (`claude doctor`, `claude mcp list`), suggest changes, explain tradeoffs
+**Confirm first:** writing or modifying files in `~/.claude/`, adding MCP servers, creating hooks
+**Never:** delete existing config without showing what will be lost, overwrite without showing a diff, silently skip config that already exists
+
 ## What you can do
 
 1. **Bootstrap** (`/bootstrap`) — scan the environment and generate global `~/.claude/` config from scratch
@@ -58,15 +68,20 @@ Adapt from these examples rather than starting from scratch.
 
 ## Conventions
 
-- Examples are practical and minimal — no bloat, no hypothetical scenarios
-- Each example should work if copied directly
-- Guides are cheatsheets — link to official docs for depth
-- Running `claude` in this repo should be immediately useful
+- Every example must work when pasted into a fresh `~/.claude/` — no undocumented dependencies
+- Guides are cheatsheets, not tutorials — link to official docs for depth
+- No hypothetical scenarios — only patterns that have actually been used
 
 ## Git
 
 - Commit style: descriptive imperative (`Add X`, `Fix Y`, `Consolidate Z`)
 - No conventional-commits prefix
+
+## Testing
+
+- Smoke test: `bash test/smoke-test.sh` — validates skills, pre-injection commands, fallbacks (no API key needed)
+- E2e bootstrap: `ANTHROPIC_API_KEY=sk-... bash test/e2e-bootstrap.sh` — runs `/bootstrap` headless against a simulated fresh install
+- Docker: `docker build -f test/Dockerfile -t cc-e2e .` then `docker run --rm cc-e2e` (needs mounted credentials)
 
 ## Adding content
 
