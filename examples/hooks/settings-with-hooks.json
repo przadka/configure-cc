@@ -2,22 +2,22 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Bash(git commit *)",
+        "matcher": "Bash",
         "hooks": [
           {
+            "_comment": "Block git add . / git add -A — force explicit file paths",
             "type": "command",
-            "command": "echo 'Pre-commit check: ensure tests pass before committing'"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
+            "command": "jq -r '.tool_input.command' | { read -r cmd; if echo \"$cmd\" | grep -qE '(^|&& |; )git add (\\. |\\.$|\\./? &&|\\./? ;|(-A|--all))'; then echo \"{\\\"decision\\\":\\\"block\\\",\\\"reason\\\":\\\"Use explicit file paths with git add. Never use git add . or git add -A.\\\"}\"; fi; }"
+          },
           {
+            "_comment": "Block force push to main/master",
             "type": "command",
-            "command": "echo 'File modified — consider running linter'"
+            "command": "jq -r '.tool_input.command' | { read -r cmd; if echo \"$cmd\" | grep -qP '^git push\\b.*(-f\\b|--force\\b)' && echo \"$cmd\" | grep -qP '^git push\\b.*\\b(main|master)\\b'; then echo \"{\\\"decision\\\":\\\"block\\\",\\\"reason\\\":\\\"Force push to main/master is blocked. This is a destructive operation.\\\"}\"; fi; }"
+          },
+          {
+            "_comment": "Block rm -rf targeting critical paths (/, ~, /home/<user>, system dirs) but allow subdirectories",
+            "type": "command",
+            "command": "jq -r '.tool_input.command' | { read -r cmd; if echo \"$cmd\" | grep -qP 'rm\\s+(-[a-zA-Z]*r[a-zA-Z]*f|-[a-zA-Z]*f[a-zA-Z]*r)\\s+(/(?:\\s|$)|~/?(?:\\s|$)|\\$HOME/?(?:\\s|$)|/(?:bin|etc|usr|var)/?(?:\\s|$)|/home(?:/[^/\\s]+)?/?(?:\\s|$))'; then echo \"{\\\"decision\\\":\\\"block\\\",\\\"reason\\\":\\\"Blocked rm -rf targeting a critical path. This looks destructive.\\\"}\"; fi; }"
           }
         ]
       }
