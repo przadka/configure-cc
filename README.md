@@ -70,7 +70,8 @@ configure-cc/
 | CLAUDE.md | `./CLAUDE.md` or `~/.claude/CLAUDE.md` | Persistent instructions for Claude |
 | Rules | `.claude/rules/*.md` | Modular, optionally path-scoped instructions |
 | Skills | `.claude/skills/<name>/SKILL.md` | Reusable prompt workflows (`/skill-name`) |
-| Settings | `.claude/settings.json` | Hooks, permissions, tool config |
+| Settings | `.claude/settings.json` | Permissions, tool config, env |
+| Hooks | `.claude/settings.json` (`hooks` key) | Shell commands on lifecycle events (PreToolUse, etc.) |
 | MCP servers | `~/.claude.json` or `.mcp.json` | External tool integrations |
 | Auto memory | `~/.claude/projects/<project>/memory/` | Claude's self-written notes |
 
