@@ -103,5 +103,6 @@ Always check the latest docs when unsure — CC evolves fast:
 - [Status Line](https://code.claude.com/docs/en/statusline) — custom status bar configuration
 - [MCP](https://code.claude.com/docs/en/mcp) — Model Context Protocol server setup
 - [Sub-agents](https://code.claude.com/docs/en/sub-agents) — agent definitions and sub-agent configuration
+- [Agent view](https://code.claude.com/docs/en/agent-view) — `claude agents`, background sessions, supervisor process (v2.1.139+)
 - [Headless / claude -p](https://code.claude.com/docs/en/headless) — non-interactive/CI usage
 - [Full docs index](https://code.claude.com/docs/llms.txt)

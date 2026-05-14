@@ -8,6 +8,11 @@
 | `/rewind` or `Esc+Esc` | Restore code and/or conversation to earlier point | Claude went off track, undo mistakes |
 | `/compact` | Compress context, CLAUDE.md reloaded fresh | Session getting sluggish |
 | `/resume` or `claude --continue` | Resume previous session | Coming back to unfinished work |
+| `/bg` or `/background` | Move current session into agent view background | Step away from a long-running task without closing it |
+
+Press `←` on an empty prompt to background the current session and open agent view with it pre-selected.
+Toggle off in `/config` if you don't want the shortcut.
+See [guides/multi-agent.md](multi-agent.md#agent-view-recommended) for the full agent view workflow.
 
 ## /fork patterns
 

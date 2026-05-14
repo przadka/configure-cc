@@ -1,8 +1,36 @@
 # Multi-Agent Patterns
 
+## Agent view (recommended)
+
+`claude agents` opens one screen for many background sessions.
+Dispatch a task, peek with `Space`, attach with `Enter`/`→`, detach with `←` on an empty prompt.
+A supervisor process keeps sessions running with no terminal attached.
+
+```bash
+claude agents                              # open the view
+claude --bg "investigate the flaky test"   # dispatch from shell
+claude attach <id>                         # attach by short id
+claude logs <id>                           # tail recent output
+```
+
+From inside an existing session, `/bg` (or `←` on an empty prompt) moves it into the background.
+
+Each session edits in its own git worktree under `.claude/worktrees/`,
+so parallel sessions don't stomp on each other.
+Caveats:
+- Each session burns subscription quota independently
+- Sessions die when your machine sleeps — `claude respawn --all` brings them back from where they left off
+- Deleting a session wipes its worktree, including uncommitted changes — push or merge first
+- Kill switch: `disableAgentView: true` in settings, or `CLAUDE_CODE_DISABLE_AGENT_VIEW=1`
+
+Requires Claude Code v2.1.139+.
+Full docs: [Manage multiple agents with agent view](https://code.claude.com/docs/en/agent-view).
+
 ## Level 1: Multiple terminals
 
-Open multiple terminals, each running `claude` in the same repo. They share the filesystem but have separate context windows.
+Open multiple terminals, each running `claude` in the same repo.
+They share the filesystem but have separate context windows.
+Largely superseded by agent view, but useful when you want each session pinned to its own terminal pane.
 
 **Use case:** One instance writes code, another reviews it.
 
