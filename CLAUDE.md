@@ -62,7 +62,7 @@ Working examples of every config surface:
 - `examples/skills/` — portable skill files to copy and adapt
 - `examples/hooks/` — hook config JSON examples
 - `examples/rules/` — rule files including path-scoped examples
-- `guides/` — cheatsheets for hooks, sessions, multi-agent, memory, statusline
+- `guides/` — cheatsheets for hooks, sessions, multi-agent, workflows, memory, statusline
 
 Adapt from these examples rather than starting from scratch.
 

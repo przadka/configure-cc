@@ -50,6 +50,7 @@ configure-cc/
 │   ├── hooks.md                          # Hook types, matchers, patterns
 │   ├── session-management.md             # /fork, /rewind, /compact
 │   ├── multi-agent.md                    # Parallel CC, worktrees, multi-model
+│   ├── workflows.md                      # Dynamic workflows, ultracode, /deep-research
 │   ├── memory-and-insights.md            # Auto memory, /insights
 │   └── statusline.md                     # Custom status bar setup
 └── README.md
@@ -90,6 +91,7 @@ Performance audits, network inspection, DOM access.
 
 ## Reference docs
 
+- [How Claude Code Works](https://code.claude.com/docs/en/how-claude-code-works)
 - [Memory & CLAUDE.md](https://code.claude.com/docs/en/memory)
 - [Skills](https://code.claude.com/docs/en/skills)
 - [Hooks](https://code.claude.com/docs/en/hooks)
@@ -97,5 +99,6 @@ Performance audits, network inspection, DOM access.
 - [Status Line](https://code.claude.com/docs/en/statusline)
 - [MCP](https://code.claude.com/docs/en/mcp)
 - [Sub-agents](https://code.claude.com/docs/en/sub-agents)
+- [Agent view](https://code.claude.com/docs/en/agent-view)
 - [Headless / claude -p](https://code.claude.com/docs/en/headless)
 - [Full docs index](https://code.claude.com/docs/llms.txt)

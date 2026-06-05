@@ -86,6 +86,13 @@ Consolidate findings into P1/P2/P3 triage list.
 
 Using multiple models together catches more than any single model alone.
 
+## Level 5: Dynamic workflows
+
+When the orchestration outgrows a single context window — dozens-to-hundreds of agents,
+a repeatable adversarial-verify pass, a large migration — reach for a workflow.
+The plan moves into a script the runtime executes in the background, so only the final
+answer returns to your context. See [workflows.md](workflows.md).
+
 ## Worktrees for isolation
 
 Git worktrees give each agent its own copy of the repo. Two ways to do it:
