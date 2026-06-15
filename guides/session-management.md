@@ -45,12 +45,12 @@ Limitation: can't undo bash side effects (git push, rm, database changes).
 ## Session resume
 
 ```bash
-# List recent sessions
-claude --list
+# Pick from recent sessions (interactive)
+claude --resume
 
 # Continue the most recent session
 claude --continue
 
-# Continue a specific session
-claude --continue --session <session-id>
+# Resume a specific session by ID
+claude --resume <session-id>
 ```

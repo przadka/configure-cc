@@ -3,7 +3,7 @@ name: audit-agents-md
 description: Audit a project's CLAUDE.md / AGENTS.md for structure, bloat, stale references, and best practices
 disable-model-invocation: true
 effort: high
-allowed-tools: Read Glob Grep Bash(ls *) Bash(find *) Bash(cat *) Bash(wc *) Bash(test *) Bash(stat *) Bash(head *)
+allowed-tools: Read Glob Grep Bash(ls *) Bash(find *) Bash(cat *) Bash(wc *) Bash(test *) Bash(stat *) Bash(head *) Bash(command -v *)
 ---
 
 Audit the CLAUDE.md or AGENTS.md in the **current project directory**. ultrathink about what you find.
@@ -96,7 +96,7 @@ For each bloat finding, note the line range and suggest where to extract it.
 Verify a sample of references (up to 10):
 
 - **File paths** mentioned in the doc — do they exist? Use `test -e <path>`
-- **Commands** mentioned — are the binaries installed?
+- **Commands** mentioned — are the binaries installed? Use `command -v <bin>`
 - **Version numbers** — flag if they look stale (>6 months old, or old major versions)
 - **URLs** — don't fetch, but flag obviously broken patterns (localhost links in production docs, dead GitHub paths)
 

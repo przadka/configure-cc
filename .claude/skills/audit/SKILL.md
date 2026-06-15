@@ -82,7 +82,7 @@ Report unprotected high-risk tools as ⚠
 
 ### 7. Memory Health
 - Count project memory directories
-- Flag any MEMORY.md over 200 lines (truncation risk)
+- Flag any MEMORY.md over 200 lines or 25KB (truncation risk — whichever comes first)
 
 ---
 

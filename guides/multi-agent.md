@@ -23,7 +23,7 @@ Caveats:
 - Deleting a session wipes its worktree, including uncommitted changes — push or merge first
 - Kill switch: `disableAgentView: true` in settings, or `CLAUDE_CODE_DISABLE_AGENT_VIEW=1`
 
-Requires Claude Code v2.1.139+.
+Requires Claude Code v2.1.139+. (See the [version requirements table](../README.md#version-requirements) for all feature minimums.)
 Full docs: [Manage multiple agents with agent view](https://code.claude.com/docs/en/agent-view).
 
 ## Level 1: Multiple terminals

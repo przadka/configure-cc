@@ -3,6 +3,7 @@
 A workflow is a JavaScript script that orchestrates subagents at scale.
 Claude writes the script for the task you describe; a background runtime executes it
 while your session stays responsive. Research preview, Claude Code v2.1.154+, paid plans.
+(See the [version requirements table](../README.md#version-requirements) for all feature minimums.)
 
 ## The one idea
 

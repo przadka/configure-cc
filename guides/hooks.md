@@ -28,6 +28,8 @@ If the hook prints nothing (or no decision), the tool call proceeds.
 
 ## Common Patterns
 
+> These snippets are matcher fragments only. Each must sit inside its event key in `settings.json` — e.g. `{"hooks": {"PreToolUse": [ <fragment> ]}}`. See `examples/hooks/` for complete, paste-ready files.
+
 **Block `git add .` and `git add -A`** — force explicit file paths:
 ```json
 {

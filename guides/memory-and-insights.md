@@ -13,11 +13,11 @@
 
 Claude saves notes for itself as it works — build commands, preferences, debugging insights.
 
-**Location:** `~/.claude/projects/<project>/memory/`
+**Location:** `~/.claude/projects/<project>/memory/` — where `<project>` is the escaped working-tree path with slashes turned to dashes (e.g. `/home/you/code/myapp` → `-home-you-code-myapp`), not a clean project name. Use `/memory` → "open memory folder" to find it reliably.
 
 ```
 memory/
-├── MEMORY.md          # Index, loaded every session (first 200 lines)
+├── MEMORY.md          # Index, loaded every session (first 200 lines / 25KB)
 ├── debugging.md       # Topic file, loaded on demand
 └── api-conventions.md # Topic file, loaded on demand
 ```

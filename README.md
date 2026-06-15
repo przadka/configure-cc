@@ -89,6 +89,18 @@ claude mcp add --scope user chrome-devtools -- npx -y chrome-devtools-mcp@latest
 ```
 Performance audits, network inspection, DOM access.
 
+## Version requirements
+
+Some features in these guides need a recent Claude Code build. Canonical list (cross-referenced from the guides):
+
+| Feature | Minimum CC version |
+|---|---|
+| Agent view (`claude agents`, background sessions) | v2.1.139+ |
+| Dynamic workflows | v2.1.154+ |
+| `ultracode` keyword (was `workflow`) | v2.1.160+ |
+
+Check yours with `claude --version`.
+
 ## Reference docs
 
 - [How Claude Code Works](https://code.claude.com/docs/en/how-claude-code-works)
