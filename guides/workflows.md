@@ -55,6 +55,7 @@ The value isn't the API, it's a handful of composable shapes:
 5. **Generate-and-filter** — produce many candidates, filter down.
 6. **Loop-until-dry** — keep spawning finders until K rounds find nothing new. For unknown-size discovery (bugs, edge cases). Dedupe against *everything* seen or it never converges.
 7. **Cross-model lens** — add a non-Claude reviewer (e.g. the Codex CLI) as one lens, then verify its findings with Claude. A lens agent shells out to the other tool and normalizes its output into your schema; those findings flow through the same verify pass. Agreement raises confidence; disagreement surfaces a blind spot one model alone would miss.
+8. **Inverted verify (refute-the-*cut*)** — adversarial verify (#2) defaults to *refuting the finding*: keep only what survives, because a false positive is cheap. When the destructive act is the **removal** — pruning docs, deleting code, dropping data — flip the default: have the verifier refute the *cut* and default to **KEEP**, so uncertainty preserves instead of destroys. Same machinery, opposite default; pick it by which mistake is expensive. (A bug-hunt and a doc-trimmer want opposite polarities.)
 
 ## Primitives Claude writes against
 
