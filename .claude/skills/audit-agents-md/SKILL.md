@@ -20,6 +20,12 @@ Checks below carry an evidence tag. Weight findings accordingly:
 - **[official]** — vendor documentation. Authoritative for tool mechanics.
 - **[practitioner]** — experience reports, vendor-run evals. Hedge; present as suggestion, not fact.
 
+The tag rates the rule, not your application of it —
+your mapping of a rule onto this repo's content is your own judgment,
+so cite the exact lines that let the reader check that mapping.
+Findings not backed by a check in this file get no tag and are reported as suggestions, never problems,
+unless verified against the repo itself (a failing `test -e`, a missing binary, a contradiction between two files).
+
 ---
 
 ## Pre-loaded snapshot
