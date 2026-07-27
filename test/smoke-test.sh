@@ -132,7 +132,7 @@ run_cmd "home dir" \
   'echo ~'
 
 run_cmd "key binaries" \
-  'which git node pnpm npm yarn bun python python3 uv pip cargo go ruby gem docker gh 2>/dev/null'
+  'which git node pnpm npm yarn bun python python3 uv pip cargo go ruby gem docker gh 2>/dev/null || true'
 
 run_cmd "global MCP config" \
   'cat ~/.claude.json 2>/dev/null || echo "(no global MCP config)"'
@@ -150,13 +150,46 @@ run_cmd "global skills find" \
   'find ~/.claude/skills/ -name "SKILL.md" 2>/dev/null || echo "(no skills)"'
 
 run_cmd "installed CLI tools" \
-  'which git gh node pnpm npm yarn bun python python3 uv pip cargo go ruby docker kubectl 2>/dev/null'
+  'which git gh node pnpm npm yarn bun python python3 uv pip cargo go ruby docker kubectl 2>/dev/null || true'
 
 run_cmd "claude version" \
   'claude --version 2>/dev/null || echo "(claude CLI not in PATH)"'
 
 run_cmd "memory directories" \
   'find ~/.claude/projects/ -name "MEMORY.md" 2>/dev/null | head -10 || echo "(no memory files)"'
+
+# ─── 4b. Pre-injection commands (audit-agents-md) ─────────────
+header "4b. Audit-agents-md skill — pre-injection commands (bare project)"
+
+BARE_PROJ=$(mktemp -d)
+
+run_cmd "instruction file counts" \
+  'cd "$BARE_PROJ" && (found=; for f in CLAUDE.md AGENTS.md AGENT.md GEMINI.md .cursorrules; do if [ -f "$f" ]; then wc -l "$f"; found=1; fi; done; [ -n "$found" ] || echo "(no instruction files in root)")'
+
+run_cmd "instruction file listing" \
+  'cd "$BARE_PROJ" && (ls -la CLAUDE.md AGENTS.md AGENT.md GEMINI.md 2>/dev/null || true)'
+
+run_cmd "docs listing" \
+  'cd "$BARE_PROJ" && ((ls docs/ 2>/dev/null || echo "(no docs/ directory)") | head -20)'
+
+run_cmd "project rules listing" \
+  'cd "$BARE_PROJ" && (ls .claude/rules/ 2>/dev/null || echo "(no .claude/rules/ directory)")'
+
+run_cmd "codeowners" \
+  'cd "$BARE_PROJ" && ((cat .github/CODEOWNERS 2>/dev/null || cat CODEOWNERS 2>/dev/null || cat docs/CODEOWNERS 2>/dev/null || echo "(no CODEOWNERS)") | head -40)'
+
+# Regression: with SOME instruction files present, the "(no instruction files)"
+# fallback must not leak into the output (a bare wc/ls over the full name list
+# exits nonzero when any listed file is missing, which triggers || fallbacks).
+printf 'test\n' > "$BARE_PROJ/CLAUDE.md"
+partial_out=$(cd "$BARE_PROJ" && (found=; for f in CLAUDE.md AGENTS.md AGENT.md GEMINI.md .cursorrules; do if [ -f "$f" ]; then wc -l "$f"; found=1; fi; done; [ -n "$found" ] || echo "(no instruction files in root)"))
+if echo "$partial_out" | grep -q "CLAUDE.md" && ! echo "$partial_out" | grep -q "no instruction files"; then
+  pass "partial project: counts shown, no stray fallback"
+else
+  fail "partial project: expected CLAUDE.md count without fallback, got: $partial_out"
+fi
+
+rm -rf "$BARE_PROJ"
 
 # ─── 5. Verify fallback values make sense ─────────────────────
 header "5. Fallback output validation"
