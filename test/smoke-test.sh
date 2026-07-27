@@ -178,6 +178,34 @@ run_cmd "project rules listing" \
 run_cmd "codeowners" \
   'cd "$BARE_PROJ" && ((cat .github/CODEOWNERS 2>/dev/null || cat CODEOWNERS 2>/dev/null || cat docs/CODEOWNERS 2>/dev/null || echo "(no CODEOWNERS)") | head -40)'
 
+# Regression: snapshot commands resolve the target from the argument
+# (file:// URL or bare path), fall back to cwd when empty, and fail loudly on
+# a missing directory. Before this, the snapshot silently ran in the session
+# cwd whenever /audit-agents-md was pointed at another repo.
+expected=$(cd "$BARE_PROJ" && pwd)
+for arg_case in "file://$BARE_PROJ" "$BARE_PROJ"; do
+  resolved=$( (d="$arg_case"; d="${d#file://}"; cd "${d:-.}" 2>/dev/null && echo "snapshot dir: $(pwd)" || echo "(cannot access target '$d')") )
+  if [ "$resolved" = "snapshot dir: $expected" ]; then
+    pass "target resolution: '$arg_case' -> $expected"
+  else
+    fail "target resolution: '$arg_case' gave: $resolved"
+  fi
+done
+
+resolved=$( (d=""; d="${d#file://}"; cd "${d:-.}" 2>/dev/null && echo "snapshot dir: $(pwd)" || echo "(cannot access target '$d')") )
+if [ "$resolved" = "snapshot dir: $(pwd)" ]; then
+  pass "target resolution: empty argument falls back to cwd"
+else
+  fail "target resolution: empty argument gave: $resolved"
+fi
+
+resolved=$( (d="$BARE_PROJ/nope"; d="${d#file://}"; cd "${d:-.}" 2>/dev/null && echo "snapshot dir: $(pwd)" || echo "(cannot access target '$d')") )
+if [ "$resolved" = "(cannot access target '$BARE_PROJ/nope')" ]; then
+  pass "target resolution: missing directory fails loudly"
+else
+  fail "target resolution: missing directory gave: $resolved"
+fi
+
 # Regression: with SOME instruction files present, the "(no instruction files)"
 # fallback must not leak into the output (a bare wc/ls over the full name list
 # exits nonzero when any listed file is missing, which triggers || fallbacks).

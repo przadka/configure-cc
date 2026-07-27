@@ -3,10 +3,16 @@ name: audit-agents-md
 description: Audit a project's CLAUDE.md / AGENTS.md for structure, bloat, stale references, and best practices
 disable-model-invocation: true
 effort: high
-allowed-tools: Read Glob Grep Bash(ls *) Bash(find *) Bash(cat *) Bash(wc *) Bash(grep *) Bash(test *) Bash(stat *) Bash(head *) Bash(command -v *) Bash(git log *)
+allowed-tools: Read Glob Grep Bash(ls *) Bash(find *) Bash(cat *) Bash(wc *) Bash(grep *) Bash(test *) Bash(stat *) Bash(head *) Bash(command -v *) Bash(git log *) Bash(cd *)
 ---
 
-Audit the CLAUDE.md or AGENTS.md in the **current project directory**. ultrathink about what you find.
+Audit the CLAUDE.md or AGENTS.md in the **target project directory** —
+the argument if one is given (a directory path; a `file://` URL is accepted),
+otherwise the current project directory. ultrathink about what you find.
+
+When the target is not the session cwd, run every check against the target:
+use absolute paths with Read/Grep/Glob and `test`/`ls`/`cat`;
+for `git log`, `cd` into the target first.
 
 **This is read-only. Do NOT create, edit, or delete any files.**
 
@@ -30,11 +36,17 @@ unless verified against the repo itself (a failing `test -e`, a missing binary, 
 
 ## Pre-loaded snapshot
 
-!`found=; for f in CLAUDE.md AGENTS.md AGENT.md GEMINI.md .cursorrules; do if [ -f "$f" ]; then wc -l "$f"; found=1; fi; done; [ -n "$found" ] || echo "(no instruction files in root)"`
-!`ls -la CLAUDE.md AGENTS.md AGENT.md GEMINI.md 2>/dev/null || true`
-!`(ls docs/ 2>/dev/null || echo "(no docs/ directory)") | head -20`
-!`ls .claude/rules/ 2>/dev/null || echo "(no .claude/rules/ directory)"`
-!`(cat .github/CODEOWNERS 2>/dev/null || cat CODEOWNERS 2>/dev/null || cat docs/CODEOWNERS 2>/dev/null || echo "(no CODEOWNERS)") | head -40`
+Each command below resolves the target itself (argument or cwd).
+The first line echoes where the snapshot actually ran —
+if `snapshot dir` does not match the target, discard the snapshot
+and re-run these commands in the target directory before Phase 1.
+
+!`d="$ARGUMENTS"; d="${d#file://}"; cd "${d:-.}" 2>/dev/null && echo "snapshot dir: $(pwd)" || echo "(cannot access target '$d')"`
+!`d="$ARGUMENTS"; d="${d#file://}"; cd "${d:-.}" 2>/dev/null || exit 0; found=; for f in CLAUDE.md AGENTS.md AGENT.md GEMINI.md .cursorrules; do if [ -f "$f" ]; then wc -l "$f"; found=1; fi; done; [ -n "$found" ] || echo "(no instruction files in root)"`
+!`d="$ARGUMENTS"; d="${d#file://}"; cd "${d:-.}" 2>/dev/null || exit 0; ls -la CLAUDE.md AGENTS.md AGENT.md GEMINI.md 2>/dev/null || true`
+!`d="$ARGUMENTS"; d="${d#file://}"; cd "${d:-.}" 2>/dev/null || exit 0; (ls docs/ 2>/dev/null || echo "(no docs/ directory)") | head -20`
+!`d="$ARGUMENTS"; d="${d#file://}"; cd "${d:-.}" 2>/dev/null || exit 0; ls .claude/rules/ 2>/dev/null || echo "(no .claude/rules/ directory)"`
+!`d="$ARGUMENTS"; d="${d#file://}"; cd "${d:-.}" 2>/dev/null || exit 0; (cat .github/CODEOWNERS 2>/dev/null || cat CODEOWNERS 2>/dev/null || cat docs/CODEOWNERS 2>/dev/null || echo "(no CODEOWNERS)") | head -40`
 
 ---
 
