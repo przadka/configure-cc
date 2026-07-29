@@ -43,32 +43,32 @@ Use your tools to read these paths (they may not all exist — that's expected):
 
 ## Analysis Checklist
 
-Work through each check. Report findings as ✓ (good), ⚠ (suggestion), or ✗ (problem).
+Work through each check. Report each finding as Good, Suggestion, or Problem.
 
 ### 1. CLAUDE.md Health
-- Does `~/.claude/CLAUDE.md` exist? If not → ✗
-- Is it under 200 lines? Over 200 → ⚠ split into `.claude/rules/`
-- Does it contain project-specific commands that belong in a project CLAUDE.md? → ⚠
-- Any stale references (tools not installed, paths that don't exist)? → ✗
-- Does it use `@import` for modularity? Not required, but ⚠ if over 100 lines without it
+- Does `~/.claude/CLAUDE.md` exist? If not, that is a Problem
+- Is it under 200 lines? Over 200 is a Suggestion: split into `.claude/rules/`
+- Does it contain project-specific commands that belong in a project CLAUDE.md? That is a Suggestion
+- Any stale references (tools not installed, paths that don't exist)? Those are Problems
+- Does it use `@import` for modularity? Not required, but a Suggestion if over 100 lines without it
 
 ### 2. Settings & Hooks
 - Does `~/.claude/settings.json` exist?
 - Check for safety hooks. Flag if missing:
-  - `rm -rf` blocking → ⚠
-  - `git push --force` blocking → ⚠
-  - `git add .` / `git add -A` blocking → ⚠
+  - `rm -rf` blocking, a Suggestion if absent
+  - `git push --force` blocking, a Suggestion if absent
+  - `git add .` / `git add -A` blocking, a Suggestion if absent
 
 ### 3. CLI Tool Safety
 For each installed CLI tool that can modify external state, check for protective hooks:
 - `gh` — can create PRs, close issues, delete repos
 - `docker` — can remove containers/images
 - `kubectl` — can modify cluster state
-Report unprotected high-risk tools as ⚠
+Report unprotected high-risk tools as Suggestions
 
 ### 4. MCP Servers
 - List configured servers from `~/.claude.json`
-- If Node installed but no Playwright MCP → ⚠ (common miss)
+- If Node installed but no Playwright MCP is a Suggestion (common miss)
 - Flag any servers with overly broad permissions
 
 ### 5. Skills
@@ -94,13 +94,13 @@ Report unprotected high-risk tools as ⚠
 ## Summary
 [1-2 sentences: overall health]
 
-## ✗ Problems
+## Problems
 - [issue + how to fix]
 
-## ⚠ Suggestions
+## Suggestions
 - [improvement + why it matters]
 
-## ✓ Good
+## Good
 - [things well-configured]
 
 ## Next steps

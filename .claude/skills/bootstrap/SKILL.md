@@ -119,9 +119,9 @@ Print the `claude mcp add` commands for the user to run. Skip any already config
 ```
 Done. Your global Claude Code environment is set up.
 
-  ✓ ~/.claude/CLAUDE.md     — [what it covers]
-  ✓ ~/.claude/skills/...    — [skills created or already present]
-  ✓ ~/.claude/settings.json — [hooks added or already present]
+  - ~/.claude/CLAUDE.md     — [what it covers]
+  - ~/.claude/skills/...    — [skills created or already present]
+  - ~/.claude/settings.json — [hooks added or already present]
   ℹ MCP recommendations     — [if any, with commands to run]
 
 This config applies to every project. For project-specific setup,
