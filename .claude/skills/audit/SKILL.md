@@ -58,6 +58,10 @@ Work through each check. Report each finding as Good, Suggestion, or Problem.
   - `rm -rf` blocking, a Suggestion if absent
   - `git push --force` blocking, a Suggestion if absent
   - `git add .` / `git add -A` blocking, a Suggestion if absent
+- Cross-session messaging, on CC v2.1.224+ and macOS or Linux only. Check `crossSessionInbound`:
+  - Unset is a sound default for interactive use, the behavior is derived from permission mode. Report as Good, do not suggest adding the key for its own sake
+  - Any unattended `claude -p` worker needs `accept` in its own `--settings`. Without it a held message never arrives, because `-p` cannot show the approval dialog and nothing reports the drop. A Suggestion where such workers exist
+  - A deny rule on `SendMessage` also removes messaging to subagents and agent-team teammates, since it is the same tool. Report as a Problem if the user relies on either
 
 ### 3. CLI Tool Safety
 For each installed CLI tool that can modify external state, check for protective hooks:

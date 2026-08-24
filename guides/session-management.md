@@ -9,10 +9,13 @@
 | `/compact` | Compress context, CLAUDE.md reloaded fresh | Session getting sluggish |
 | `/resume` or `claude --continue` | Resume previous session | Coming back to unfinished work |
 | `/bg` or `/background` | Move current session into agent view background | Step away from a long-running task without closing it |
+| `/list-agents` or `/peers` | List sessions this one can reach | Check what Claude can message before asking it to |
+| `/rename <name>` | Rename the current session | Give it a stable name other sessions address |
 
 Press `←` on an empty prompt to background the current session and open agent view with it pre-selected.
 Toggle off in `/config` if you don't want the shortcut.
-See [guides/multi-agent.md](multi-agent.md#agent-view-recommended) for the full agent view workflow.
+See [guides/multi-agent.md](multi-agent.md#agent-view-recommended) for the full agent view workflow
+and [cross-session messaging](multi-agent.md#cross-session-messaging) for talking between sessions.
 
 ## /fork patterns
 

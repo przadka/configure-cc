@@ -26,6 +26,98 @@ Caveats:
 Requires Claude Code v2.1.139+. (See the [version requirements table](../README.md#version-requirements) for all feature minimums.)
 Full docs: [Manage multiple agents with agent view](https://code.claude.com/docs/en/agent-view).
 
+## Cross-session messaging
+
+Claude in one session can hand a plain-text message to another of your sessions.
+Text only, never conversation history or files.
+To move a whole conversation, resume it instead.
+
+Claude drives this itself with two tools, `ListAgents` to find reachable sessions and `SendMessage` to deliver.
+You only say what the other session needs to know:
+
+```
+Ask the session in my other terminal whether the migration finished
+```
+
+Supporting commands:
+
+```bash
+/list-agents     # or /peers, lists what this session can reach
+/rename <name>   # the name other sessions address it by
+/status          # "Peer address" row shows this session's own inbox socket
+claude --name api-worker    # set the name at launch instead
+```
+
+An unnamed session is named after its working directory, like `myapp-3f`, so two can collide.
+Every row also carries a short ref in brackets, `myapp-3f [303a76]`, and the listing prints each
+session's directory. Address a session by its bare name; add the ref only when the name is ambiguous.
+
+Reach depends on where the other session runs:
+
+| Other session | How it travels | What you can send |
+|---|---|---|
+| Same machine | Per-session Unix socket, never through Anthropic servers | New messages and replies |
+| Another of your machines | Anthropic servers, over that machine's Remote Control connection | Replies only |
+| Claude Code in the cloud | Anthropic servers | Send only, it cannot message back yet |
+
+Same-machine delivery needs both sessions to see the same files,
+so a session inside a container and one on the host cannot reach each other.
+
+A cloud session is the asymmetric case worth knowing: it receives what you send,
+but has no way to answer, so read its reply in its own transcript rather than waiting for one.
+
+The listing is wider than the table. Alongside other sessions it shows in-process subagents
+you spawned and, if you have one, the teammates on your team, each row labeled by kind.
+
+An incoming message carries less authority than you do.
+It cannot approve a pending permission prompt, cannot change permissions or CLAUDE.md,
+and a slash command in its text arrives as inert text.
+Anything it asks for still hits the receiving session's own permission prompts.
+
+Inbound control with `crossSessionInbound` in settings:
+
+| Value | Behavior |
+|---|---|
+| `accept` | Deliver every message |
+| `hold` | Notice only, delivered if you approve |
+| `refuse` | Dropped without delivery |
+
+Left unset, the default keys off permission modes.
+A session that prompts for permissions takes messages, holding only those from a sender that bypasses prompts.
+A `bypassPermissions` session holds everything unless the sender also bypasses.
+An unanswered hold dialog expires after `dialogExpiry` and the message is dropped with a denial.
+It takes `"60s"`, `"5m"`, `"10m"`, or `"never"`, and defaults to `5m`.
+The same deadline governs a permission dialog forwarded to a remote client.
+
+> **Gotcha:** `claude -p` binds a socket and can receive, but it cannot show an approval dialog,
+> so anything held there stays held with no error and no timeout you will see.
+> Give unattended workers `"crossSessionInbound": "accept"` in their `--settings`.
+> `"dialogExpiry": "never"` keeps a held message parked instead of dropping it, but parked is not
+> delivered: it is a way to stop losing messages, not a way to make an unattended session read them.
+
+Turning it off is two separate controls, inbound and outbound:
+
+```json
+{
+  "permissions": { "deny": ["SendMessage", "ListAgents"] },
+  "crossSessionInbound": "refuse"
+}
+```
+
+The deny rules take bare tool names with no specifier.
+Denying `SendMessage` also cuts messaging to subagents and agent-team teammates, since it is the same tool.
+Separately, `isolatePeerMachines: true` requires your approval before any message leaves the machine,
+even under `bypassPermissions`. Any settings scope can turn that on, none can turn it off.
+
+Requires v2.1.224+ on macOS or Linux (including WSL 2), not native Windows,
+and not on Bedrock, Claude Platform on AWS, Google Cloud's Agent Platform, or Microsoft Foundry.
+It also stays off when `DISABLE_TELEMETRY`, `DO_NOT_TRACK`, `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC`,
+or `DISABLE_GROWTHBOOK` disables the feature-flag evaluation it depends on.
+If `/list-agents` is unrecognized the session lacks the feature;
+if it works but a message never landed, the cause is on the receiving side.
+
+Full docs: [Message your other Claude Code sessions](https://code.claude.com/docs/en/cross-session-messaging).
+
 ## Level 1: Multiple terminals
 
 Open multiple terminals, each running `claude` in the same repo.
@@ -33,6 +125,7 @@ They share the filesystem but have separate context windows.
 Largely superseded by agent view, but useful when you want each session pinned to its own terminal pane.
 
 **Use case:** One instance writes code, another reviews it.
+They can now talk to each other, see [cross-session messaging](#cross-session-messaging).
 
 ## Level 2: Sub-agents
 

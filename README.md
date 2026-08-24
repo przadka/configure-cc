@@ -49,7 +49,7 @@ configure-cc/
 ├── guides/                               # Cheatsheets for CC features
 │   ├── hooks.md                          # Hook types, matchers, patterns
 │   ├── session-management.md             # /fork, /rewind, /compact
-│   ├── multi-agent.md                    # Parallel CC, worktrees, multi-model
+│   ├── multi-agent.md                    # Parallel CC, worktrees, cross-session messaging
 │   ├── workflows.md                      # Dynamic workflows, ultracode, /deep-research
 │   ├── memory-and-insights.md            # Auto memory, /insights
 │   └── statusline.md                     # Custom status bar setup
@@ -98,6 +98,7 @@ Some features in these guides need a recent Claude Code build. Canonical list (c
 | Agent view (`claude agents`, background sessions) | v2.1.139+ |
 | Dynamic workflows | v2.1.154+ |
 | `ultracode` keyword (was `workflow`) | v2.1.160+ |
+| Cross-session messaging (`/list-agents`, macOS/Linux only) | v2.1.224+ |
 
 Check yours with `claude --version`.
 
@@ -112,5 +113,6 @@ Check yours with `claude --version`.
 - [MCP](https://code.claude.com/docs/en/mcp)
 - [Sub-agents](https://code.claude.com/docs/en/sub-agents)
 - [Agent view](https://code.claude.com/docs/en/agent-view)
+- [Cross-session messaging](https://code.claude.com/docs/en/cross-session-messaging)
 - [Headless / claude -p](https://code.claude.com/docs/en/headless)
 - [Full docs index](https://code.claude.com/docs/llms.txt)

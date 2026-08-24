@@ -65,6 +65,18 @@ If the hook prints nothing (or no decision), the tool call proceeds.
 
 > **Gotcha: path-prefix matching.** A naive pattern like `/home` will also block `rm -rf /home/user/.cache/old-stuff`. The pattern above anchors each protected path to end-of-argument (`(?:\s|$)`) so it only blocks the exact directory — `rm -rf /home` and `rm -rf /home/user` are blocked, but `rm -rf /home/user/tmp/build` is allowed.
 
+## Hook environment
+
+`CLAUDE_CODE_MESSAGING_SOCKET` holds the current session's own inbox socket path.
+Claude Code exports it to hooks and Bash commands before any hook runs, `SessionStart` included,
+and each session exports its own, never one inherited from a parent.
+A hook or background script can post into the session that spawned it by writing to that socket.
+Where no `crossSessionInbound` value applies, Claude Code delivers a post it can verify came from the session's own child process.
+Linux verifies that even after the child exits, macOS only while it is still running,
+and not at all in a container where Claude Code is PID 1.
+When it cannot verify, a `bypassPermissions` session holds the message for your approval instead.
+See [cross-session messaging](multi-agent.md#cross-session-messaging).
+
 ## Where to put hooks
 
 | File | Scope |

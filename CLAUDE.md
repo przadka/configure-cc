@@ -104,5 +104,6 @@ Always check the latest docs when unsure — CC evolves fast:
 - [MCP](https://code.claude.com/docs/en/mcp) — Model Context Protocol server setup
 - [Sub-agents](https://code.claude.com/docs/en/sub-agents) — agent definitions and sub-agent configuration
 - [Agent view](https://code.claude.com/docs/en/agent-view) — `claude agents`, background sessions, supervisor process (v2.1.139+)
+- [Cross-session messaging](https://code.claude.com/docs/en/cross-session-messaging) — `ListAgents` / `SendMessage`, `crossSessionInbound`, inbox socket (v2.1.224+, macOS/Linux)
 - [Headless / claude -p](https://code.claude.com/docs/en/headless) — non-interactive/CI usage
 - [Full docs index](https://code.claude.com/docs/llms.txt)
