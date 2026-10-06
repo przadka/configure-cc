@@ -76,9 +76,16 @@ Report unprotected high-risk tools as Suggestions
 - Flag any servers with overly broad permissions
 
 ### 5. Skills
+Measure against Anthropic's [skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices).
 - List global skills with their descriptions
-- Check each for valid frontmatter (name, description)
-- Flag overly permissive allowed-tools scopes
+- Run `claude plugin validate ~/.claude/skills` (v2.1.233+). A SKILL.md whose frontmatter doesn't parse is a Problem: it loads with empty metadata, so Claude can't match its description
+- A model-invocable skill whose description says what it does but not when to use it is a Suggestion. Skip skills with `disable-model-invocation: true`: their description never reaches Claude
+- A SKILL.md over 500 lines is a Suggestion: move reference material into separate files linked from SKILL.md
+- A reference file reachable only through another reference file is a Suggestion: Claude may read it partially
+- A reference file over 100 lines with no contents list near the top is a Suggestion
+- An instruction to write out reasoning or thinking in the reply is a Problem: current Claude models can decline it as reasoning extraction. Asking for a short explanation of the result is fine
+- Flag overly permissive allowed-tools scopes. The field pre-approves tools; it restricts nothing
+- With more than about 20 skills, suggest `/skill-doctor` (v2.1.252+) for each skill's context cost and usage
 
 ### 6. Rules
 - List global rules
