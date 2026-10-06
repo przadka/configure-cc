@@ -94,6 +94,7 @@ Recommend and generate skills that work across any project. Good candidates:
 - **bootstrap-project** — a lighter skill that generates project-level CLAUDE.md (the project-scoped complement to this global bootstrap)
 
 Only generate skills that don't already exist at `~/.claude/skills/`.
+Write them to Anthropic's [skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices): a description that says what the skill does and when to use it, SKILL.md under 500 lines, reference files linked directly from SKILL.md.
 
 ### 3. `~/.claude/settings.json` — Global hooks & permissions (conditional)
 

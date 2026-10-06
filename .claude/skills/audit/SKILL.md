@@ -3,7 +3,7 @@ name: audit
 description: Read-only analysis of global Claude Code configuration — flags issues and suggests improvements
 disable-model-invocation: true
 effort: high
-allowed-tools: Read Glob Grep Bash(ls *) Bash(find *) Bash(which *) Bash(cat *) Bash(wc *) Bash(claude *) Bash(uname *) Bash(echo *) Bash(head *) Bash(command *)
+allowed-tools: Read Glob Grep Bash(ls *) Bash(find *) Bash(which *) Bash(cat *) Bash(wc *) Bash(claude *) Bash(uname *) Bash(echo *) Bash(head *) Bash(command *) Bash(readlink *)
 ---
 
 Audit the user's global Claude Code configuration. ultrathink about what you find.
@@ -76,9 +76,20 @@ Report unprotected high-risk tools as Suggestions
 - Flag any servers with overly broad permissions
 
 ### 5. Skills
+Measure against Anthropic's [skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices).
 - List global skills with their descriptions
-- Check each for valid frontmatter (name, description)
-- Flag overly permissive allowed-tools scopes
+- Validate frontmatter with `claude plugin validate <dir>` (v2.1.233+). It accepts only a directory named `skills` and does not read symlinked entries, yet still reports a pass with exit 0, so a pass on `~/.claude/skills` says nothing about symlinked skills:
+  - Run it on `~/.claude/skills` for the skills stored there as real directories
+  - Resolve each symlinked skill with `readlink -f` and run it once on each distinct parent directory of the targets. If a parent is not named `skills`, the command fails with "No manifest found"; report those skills as not checked
+  - Exit 1 with "YAML frontmatter failed to parse" is a Problem: the skill loads with empty metadata, so Claude can't match its description
+  - Never report a skill as validated unless a run actually read it
+- A model-invocable skill whose description says what it does but not when to use it is a Suggestion. Skip skills with `disable-model-invocation: true`: their description never reaches Claude
+- A SKILL.md over 500 lines is a Suggestion: move reference material into separate files linked from SKILL.md
+- A reference file reachable only through another reference file is a Suggestion: Claude may read it partially
+- A reference file over 100 lines with no contents list near the top is a Suggestion
+- An instruction to write out reasoning or thinking in the reply is a Suggestion: on current Claude models such requests may be declined as reasoning extraction. Asking for a short explanation of the result is fine
+- Flag overly permissive allowed-tools scopes. The field pre-approves tools; it restricts nothing
+- With more than about 20 skills, suggest `/skill-doctor` (v2.1.252+) for each skill's context cost and usage
 
 ### 6. Rules
 - List global rules

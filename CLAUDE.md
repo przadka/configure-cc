@@ -98,6 +98,7 @@ Always check the latest docs when unsure — CC evolves fast:
 - [How Claude Code Works](https://code.claude.com/docs/en/how-claude-code-works) — agentic loop, tools, context
 - [Memory & CLAUDE.md](https://code.claude.com/docs/en/memory) — instructions, rules, auto memory
 - [Skills](https://code.claude.com/docs/en/skills) — custom slash commands and skill authoring
+- [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) — cross-product authoring rules: descriptions, progressive disclosure, evals
 - [Hooks](https://code.claude.com/docs/en/hooks) — lifecycle hooks configuration and examples
 - [Settings](https://code.claude.com/docs/en/settings) — settings.json reference
 - [Status Line](https://code.claude.com/docs/en/statusline) — custom status bar configuration
