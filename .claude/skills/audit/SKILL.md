@@ -50,7 +50,8 @@ Work through each check. Report each finding as Good, Suggestion, or Problem.
 - Is it under 200 lines? Over 200 is a Suggestion: split into `.claude/rules/`
 - Does it contain project-specific commands that belong in a project CLAUDE.md? That is a Suggestion
 - Any stale references (tools not installed, paths that don't exist)? Those are Problems
-- Does it use `@import` for modularity? Not required, but a Suggestion if over 100 lines without it
+- `@import` does not reduce context: an import expands in full at launch. An import of material only some work needs is a Suggestion: give its path and say when to read it
+- A rule in capitals, or one that must always hold, is a Suggestion: delete it if Claude does this anyway, otherwise enforce it with a hook
 
 ### 2. Settings & Hooks
 - Does `~/.claude/settings.json` exist?
@@ -90,6 +91,7 @@ Measure against Anthropic's [skill authoring best practices](https://platform.cl
 - An instruction to write out reasoning or thinking in the reply is a Suggestion: on current Claude models such requests may be declined as reasoning extraction. Asking for a short explanation of the result is fine
 - Flag overly permissive allowed-tools scopes. The field pre-approves tools; it restricts nothing
 - With more than about 20 skills, suggest `/skill-doctor` (v2.1.252+) for each skill's context cost and usage
+- For a skill that may not earn its place, suggest comparing runs with and without it, with `claude plugin eval` for a plugin. Scores that match mean the skill only costs tokens
 
 ### 6. Rules
 - List global rules
